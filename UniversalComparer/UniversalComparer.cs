@@ -11,7 +11,7 @@ namespace UniversalComparer
     class UniversalComparer : IComparer
     {
         private string SortString { get; set;}
-        private Type Type { get; set; }
+       // private Type Type { get; set; }
 
         public List<Condition> Conditions = new List<Condition>();
 
@@ -25,10 +25,10 @@ namespace UniversalComparer
         {
             List<string> list = SortString.Split(' ').ToList();
 
-            //foreach (var s in list)
-            //{
-            //    Console.WriteLine(s);
-            //}
+            foreach (var s in list)
+            {
+                Console.WriteLine(s);
+            }
 
             Console.WriteLine("--------");
 
@@ -65,23 +65,34 @@ namespace UniversalComparer
                 }
                 else
                 {
-                    if(!(i+1>list.Count-1))
-                    if (list[i + 1].Contains("desc"))
+                    if (!(i + 1 > list.Count - 1))
                     {
-                        tempCondition = new Condition();
-                        tempCondition.desc = true;
-                        tempCondition.conditionParametr = list[i];
+                        if (list[i + 1].Contains("desc"))
+                        {
+                            tempCondition = new Condition();
+                            tempCondition.desc = true;
+                            tempCondition.conditionParametr = list[i];
+                        }
+                    }
+                    else
+                    {
+                        if (!(list[i].Contains("desc") && list[i].Length==4))
+                        {
+                            tempCondition = new Condition();
+                            tempCondition.desc = false;
+                            tempCondition.conditionParametr = list[i];
+                        }
                     }
                 }
 
                 if (list[i].Contains('.'))
                 {
-                  //  var tempStr = list[i].Split('.');
+                   // var tempStr = list[i].Split('.');
                     if (list[i + 1].Contains("desc"))
                     {
                         tempCondition = new Condition();
                         tempCondition.desc = true;
-                        tempCondition.conditionParametr = list[i];  //tempStr[tempStr.Length-1];
+                        tempCondition.conditionParametr = list[i]; //tempStr[0];
                     }
                 };
                 if(tempCondition!=null) Conditions.Add(tempCondition);
@@ -97,9 +108,8 @@ namespace UniversalComparer
         public int Test(object x, object y)
         {
             Type myType = x.GetType();
-            IList<FieldInfo> props = myType.GetFields();
+            List<FieldInfo> props = myType.GetFields().ToList();
 
-            string a;
             //foreach (FieldInfo prop in props)
             //{
             //    Console.WriteLine(prop.GetValue(x) == null ? "null" : prop.GetValue(x));
@@ -108,13 +118,41 @@ namespace UniversalComparer
 
             foreach (var condition in Conditions)
             {
-                var value1 = (string)props.Single(p => p.Name == condition.conditionParametr).GetValue(x);
-                var value2 = (string)props.Single(p => p.Name == condition.conditionParametr).GetValue(y);
+                object value1, value2;
+                if (condition.conditionParametr.Contains('.'))
+                {
+                    value1 = props.SingleOrDefault(p => p.Name == condition.conditionParametr.Split('.')[0]).GetValue(x);
+                    value2 = props.SingleOrDefault(p => p.Name == condition.conditionParametr.Split('.')[0]).GetValue(y);
+                }
+                else
+                {
+                    value1 = props.SingleOrDefault(p => p.Name == condition.conditionParametr).GetValue(x);
+                    value2 = props.SingleOrDefault(p => p.Name == condition.conditionParametr).GetValue(y);
+                }
 
-                return String.Compare(value1, value2, StringComparison.Ordinal);
+                Console.WriteLine(value1.GetType().ToString() + "---" + value1==null ? "null" : value1);
+                switch (value1.GetType().ToString())
+                {
+                    case "System.String": Console.WriteLine("s="+(string)value1); break;
+                    case "System.Int32": Console.WriteLine("i=" + (int)value1);  break;
+                    default: Console.WriteLine("data="+((PropertyInfo)InnerValue(value1, condition.conditionParametr)).GetValue(value1)); break;
+                }
             }
-
+           
             return 0;
+        }
+
+        public object InnerValue(object obj, string str)
+        {
+            List<PropertyInfo> props = obj.GetType().GetProperties().ToList();
+            var value = props.SingleOrDefault(p => p.Name == str);
+            if (value != null) return value;
+            else
+            {
+                var some = InnerValue(obj, str.Substring(str.IndexOf('.') + 1));
+                if (some != null) return some;
+            }
+            return null;
         }
 
         public int Compare(object x, object y)
