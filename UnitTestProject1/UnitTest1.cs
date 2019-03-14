@@ -132,8 +132,7 @@ namespace UnitTestProject1
             //Action
             int result = comparer.Compare(person1, person2);
 
-            //Assert
-            Assert.AreEqual(result, -1);
+            //AssertAssert.AreEqual(result, -1);
         }
     }
 }

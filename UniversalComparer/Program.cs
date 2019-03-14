@@ -104,11 +104,12 @@ namespace UniversalComparer
             var comparer2 = new UniversalComparer(str2, false);
             Console.WriteLine("--------");
             people.Sort(comparer);
-            ShowCollection(people);           
-          //  Console.WriteLine("--------");
-          //  Console.WriteLine("result of car compare:" + comparer2.Test2(car1, car2));
-          //  Console.WriteLine("result of compare:"+ comparer.Test2(person1, person2));
-          //  Console.WriteLine(Comparer.Default.Compare("Aoren", "Lobar"));
+            ShowCollection(people);
+            //  Console.WriteLine(comparer.Compare(null, null));
+            //  Console.WriteLine("--------");
+            //  Console.WriteLine("result of car compare:" + comparer2.Test2(car1, car2));
+            //  Console.WriteLine("result of compare:"+ comparer.Test2(person1, person2));
+            //  Console.WriteLine(Comparer.Default.Compare("Aoren", "Lobar"));
             Console.ReadLine();
         }
 

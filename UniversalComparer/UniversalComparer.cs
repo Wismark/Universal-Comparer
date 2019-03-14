@@ -8,11 +8,11 @@ namespace UniversalComparer
 {
     public class UniversalComparer : IComparer<object>
     {
-        private string SortString { get; set;}
+        private string SortString { get; }
 
-        private bool _nullValueIsSmallest;
+        private readonly bool _nullValueIsSmallest;
         public List<Condition> Conditions = new List<Condition>();
-        private int _conditionIterator = 0;
+        private int _conditionIterator;
         private bool _desc;
 
         public UniversalComparer(string sortString, bool nullValueIsSmallest)
@@ -25,13 +25,6 @@ namespace UniversalComparer
         private void ParseSortCondition()
         {
             List<string> list = SortString.Split(' ').ToList();
-
-            //foreach (var s in list)
-            //{
-            //    Console.WriteLine(s);
-            //}
-
-           // Console.WriteLine("--------");
 
             for (int i=0; i<list.Count; i++)
             {
@@ -90,161 +83,16 @@ namespace UniversalComparer
                 {
                     if (!(i + 1 > list.Count - 1))
                     {
-                        // var tempStr = list[i].Split('.');
                         if (list[i + 1].Contains("desc"))
                         {
                             tempCondition = new Condition();
                             tempCondition.Desc = true;
-                            tempCondition.ConditionParametr = list[i]; //tempStr[0];
+                            tempCondition.ConditionParametr = list[i];
                         }
                     }
-                };
+                }
                 if(tempCondition!=null) Conditions.Add(tempCondition);
             }
-
-            //foreach (var condition in Conditions)
-            //{
-            //    Console.WriteLine(condition.ConditionParametr + " " + condition.Desc);
-            //}
-
-        }
-
-        public int Test(object x, object y)
-        {
-            Type myType = x.GetType();
-            List<FieldInfo> props = myType.GetFields().ToList();
-
-            //foreach (FieldInfo prop in props)
-            //{
-            //    Console.WriteLine(prop.GetValue(x) == null ? "null" : prop.GetValue(x));
-            //}
-            //Console.WriteLine("--------");
-
-            foreach (var condition in Conditions)
-            {
-                object value1, value2;
-                if (condition.ConditionParametr.Contains('.'))
-                {
-                    value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0]).GetValue(x);
-                    value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0]).GetValue(y);
-                }
-                else
-                {
-                    value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr).GetValue(x);
-                    value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr).GetValue(y);
-                }
-
-                Console.WriteLine(value1.GetType().ToString() + "---" + value1==null ? "null" : value1);
-                switch (value1.GetType().ToString())
-                {
-                    case "System.String": Console.WriteLine("s="+(string)value1); break;
-                    case "System.Int32": Console.WriteLine("i=" + (int)value1);  break;
-                    default: Console.WriteLine("data="+((PropertyInfo)InnerValue(value1, condition.ConditionParametr)).GetValue(value1)); break;
-                }
-            }
-           
-            return 0;
-        }
-
-        public object InnerValue(object obj, string str)
-        {
-            List<PropertyInfo> props = obj.GetType().GetProperties().ToList();
-            object value = props.SingleOrDefault(p => p.Name == str);
-            //if (value is null)
-            //{              
-            //    List<FieldInfo> fields = obj.GetType().GetFields().ToList();
-            //    value = fields.SingleOrDefault(p => p.Name == str.Split('.')[0]);
-            //    if (value != null) return InnerValue(obj, str.Substring(str.IndexOf('.') + 1));
-            //}
-            if (value != null)
-                return value;
-            var some = InnerValue(obj,
-                str.Substring(str.IndexOf('.') + 1));
-            return some;
-        }
-
-        public int Test2(object x, object y)
-        {
-            try
-            {
-                if (Comparer.Default.Compare(x, y) == 0)
-                {
-                    return 0;                   
-                }
-                int result;
-                if (_desc) result = Comparer.Default.Compare(x, y) * -1;
-                else result = Comparer.Default.Compare(x, y);
-                if (x is null || y is null)
-                {
-                    if (_nullValueIsSmallest) return result*-1;
-                    return  result;
-                }
-                return result;
-            }
-            catch
-            {
-                // ignored
-            }
-
-            Type myType = x.GetType();
-            List<FieldInfo> fields = myType.GetFields().ToList();
-            List<PropertyInfo> props = myType.GetProperties().ToList();
-            
-            foreach (var condition in Conditions)
-            {
-                _desc = condition.Desc;
-                object value1 = null, value2 = null;
-                if (condition.ConditionParametr.Contains('.'))
-                {
-                    if (props.Count > 0)
-                    {
-                        value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
-                        value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
-                    }
-                    if (value1 == null && value2==null )
-                        if (fields.Count > 0)
-                        {
-                            value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
-                            value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
-                        }
-                    if (value1 != null || value2 !=null)
-                    {
-                        string temp = condition.ConditionParametr;
-                        condition.ConditionParametr = temp.Substring(temp.IndexOf('.') + 1);
-                        int result = Test2(value1, value2);
-                        if (_conditionIterator + 1 == Conditions.Count && result == 0)
-                        {
-                            return 0;
-                        }
-                        if (result != 0) return result;
-                    }
-                }
-                else
-                {
-                    if (props.Count > 0)
-                    {
-                        value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(x);
-                        value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(y);
-                    }
-                    if(value1==null && value2 == null)
-                        if (fields.Count > 0)
-                        {
-                            value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(x);
-                            value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(y);
-                        }
-                    if (value1 != null || value2 != null)
-                    {
-                        int result = Test2(value1, value2);
-                        if (_conditionIterator + 1 == Conditions.Count && result==0)
-                        {
-                            return 0;
-                        }
-                        if(result!=0) return result;
-                    }                  
-                }
-                _conditionIterator++;
-            }
-            return 0;
         }
 
         public int Compare(object x, object y)
@@ -270,6 +118,7 @@ namespace UniversalComparer
                 // ignored
             }
 
+            // ReSharper disable once PossibleNullReferenceException
             Type myType = x.GetType();
             List<FieldInfo> fields = myType.GetFields().ToList();
             List<PropertyInfo> props = myType.GetProperties().ToList();
