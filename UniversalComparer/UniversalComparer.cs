@@ -208,7 +208,7 @@ namespace UniversalComparer
                         value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
                         value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
                     }
-                    if (value1 == null) //
+                    if (value1 == null && value2==null ) //
                         if (fields.Count > 0)
                         {
                             value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
@@ -216,6 +216,8 @@ namespace UniversalComparer
                         }
                     if (value1 != null || value2 !=null) //
                     {
+                        string temp = condition.ConditionParametr;
+                        condition.ConditionParametr = temp.Substring(temp.IndexOf('.') + 1);
                         int result = Test2(value1, value2);
                         if (condition_iterator + 1 == Conditions.Count && result == 0)
                         {
@@ -231,7 +233,7 @@ namespace UniversalComparer
                         value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(x);
                         value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(y);
                     }
-                    if(value1==null) //
+                    if(value1==null && value2 == null) //
                         if (fields.Count > 0)
                         {
                             value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(x);
@@ -249,6 +251,8 @@ namespace UniversalComparer
                 }
                 condition_iterator++;
             }
+
+            return 0;
             throw new Exception("Error");
         }
 
