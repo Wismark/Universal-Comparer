@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversalComparer
 {
-    class Condition
+    public class Condition
     {
         public string ConditionParametr { get; set; }
         public bool Desc { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -27,7 +28,24 @@ namespace UniversalComparer
                 FirstName = "Donald",
                 LastName = "Duck",
                 number = 223
-    };
+            };
+            //var person1 = new Person()
+            //{
+            //    Born = DateTime.MinValue,
+            //    Chief = null,
+            //    FirstName = "John",
+            //    LastName = "Aoren",
+            //    number = 223
+            //};
+
+            //var person2 = new Person()
+            //{
+            //    Born = DateTime.MinValue,
+            //    Chief = null,
+            //    FirstName = "Hikel",
+            //    LastName = "Lobar",
+            //    number = 100
+            //};
             var person3 = new Person()
             {
                 Born = DateTime.MinValue,
@@ -41,9 +59,18 @@ namespace UniversalComparer
             {
                 Born = DateTime.MaxValue,
                 Chief = null,
-                FirstName = "Hikel",
+                FirstName = "Aikel",
                 LastName = "Lobar",
                 number = 100
+            };
+
+            var person5 = new Person()
+            {
+                Born = DateTime.MaxValue,
+                Chief = null,
+                FirstName = "Aikel",
+                LastName = "Lobar",
+                number = 999
             };
 
             var car1 = new Car()
@@ -62,7 +89,7 @@ namespace UniversalComparer
                 Owner = person1
             };
 
-            people.AddRange(new Person[] { person1, person2, person3 });
+            people.AddRange(new Person[] { person1, person2, person3, person4, person5 });
 
             string t1 = "Chief.Born.Day, FirstName, Born.Year desc, number",
                 t2 = "FirstName desc, Born.Day, Chief.Born.Day desc",
@@ -71,15 +98,17 @@ namespace UniversalComparer
 
             string str = "HasEngine, maxSpeed desc, Owner.Chief.Born.Day";
             string str2 = "Owner.Chief.Born.Day, maxSpeed, Owner.Born.Day";
-            //ShowCollection(people);
-            var comparer = new UniversalComparer(t1, false);
+            ShowCollection(people);
+            //Console.ReadKey();
+            var comparer = new UniversalComparer("LastName, FirstName, Born.Year desc", false);
             var comparer2 = new UniversalComparer(str2, false);
-            //people.Sort(0,3, comparer as IComparer<Person>);
-            //ShowCollection(people);           
             Console.WriteLine("--------");
-            Console.WriteLine("result of car compare:" + comparer2.Test2(car1, car2));
-            Console.WriteLine("result of compare:"+ comparer.Test2(person3, person4));
-          //  Console.WriteLine(comparer.Compare("Hikel", "Hikel"));
+            people.Sort(comparer);
+            ShowCollection(people);           
+          //  Console.WriteLine("--------");
+          //  Console.WriteLine("result of car compare:" + comparer2.Test2(car1, car2));
+          //  Console.WriteLine("result of compare:"+ comparer.Test2(person1, person2));
+          //  Console.WriteLine(Comparer.Default.Compare("Aoren", "Lobar"));
             Console.ReadLine();
         }
 
@@ -89,7 +118,7 @@ namespace UniversalComparer
             foreach (var person in peopleList)
             {
                 Console.WriteLine(String.Concat($"Name:{person.FirstName} {person.LastName}  Born:{person.Born.Date.ToString("MM/dd/yyyy",CultureInfo.InvariantCulture)} "
-                                 ,(person.Chief is null ? "" : "Chief:"+ person.Chief.FirstName + " " + person.Chief.LastName)));
+                                 ,(person.Chief is null ? "" : "Chief:"+ person.Chief.FirstName + " " + person.Chief.LastName ) + " " + person.number));
             }
         }
     }

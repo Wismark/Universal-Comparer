@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversalComparer
 {
-    class Car
+    public class Car
     {
         public bool HasEngine { get; set; }
         public int maxSpeed;

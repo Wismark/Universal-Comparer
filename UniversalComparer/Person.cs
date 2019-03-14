@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace UniversalComparer
 {
     public class Person
-    {
+    { 
         public Person Chief;
         public String FirstName;
         public String LastName;

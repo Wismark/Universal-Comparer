@@ -3,21 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UniversalComparer
 {
-    class UniversalComparer : IComparer
+    public class UniversalComparer : IComparer<object>
     {
         private string SortString { get; set;}
 
         private bool _nullValueIsSmallest;
-       // private Type Type { get; set; }
-
         public List<Condition> Conditions = new List<Condition>();
-        private int condition_iterator = 0;
-        private bool desc=true;
+        private int _conditionIterator = 0;
+        private bool _desc;
 
         public UniversalComparer(string sortString, bool nullValueIsSmallest)
         {
@@ -30,12 +26,12 @@ namespace UniversalComparer
         {
             List<string> list = SortString.Split(' ').ToList();
 
-            foreach (var s in list)
-            {
-                Console.WriteLine(s);
-            }
+            //foreach (var s in list)
+            //{
+            //    Console.WriteLine(s);
+            //}
 
-            Console.WriteLine("--------");
+           // Console.WriteLine("--------");
 
             for (int i=0; i<list.Count; i++)
             {
@@ -106,10 +102,10 @@ namespace UniversalComparer
                 if(tempCondition!=null) Conditions.Add(tempCondition);
             }
 
-            foreach (var condition in Conditions)
-            {
-                Console.WriteLine(condition.ConditionParametr + " " + condition.Desc);
-            }
+            //foreach (var condition in Conditions)
+            //{
+            //    Console.WriteLine(condition.ConditionParametr + " " + condition.Desc);
+            //}
 
         }
 
@@ -175,18 +171,15 @@ namespace UniversalComparer
                 {
                     return 0;                   
                 }
-                else
+                int result;
+                if (_desc) result = Comparer.Default.Compare(x, y) * -1;
+                else result = Comparer.Default.Compare(x, y);
+                if (x is null || y is null)
                 {
-                    int result;
-                    if (desc) result = Comparer.Default.Compare(x, y) * -1;
-                    else result = Comparer.Default.Compare(x, y);
-                    if (x is null || y is null)
-                    {
-                        if (_nullValueIsSmallest) return result*-1;
-                        return  result;
-                    }
-                    return result;
+                    if (_nullValueIsSmallest) return result*-1;
+                    return  result;
                 }
+                return result;
             }
             catch
             {
@@ -199,7 +192,7 @@ namespace UniversalComparer
             
             foreach (var condition in Conditions)
             {
-                desc = condition.Desc;
+                _desc = condition.Desc;
                 object value1 = null, value2 = null;
                 if (condition.ConditionParametr.Contains('.'))
                 {
@@ -208,18 +201,18 @@ namespace UniversalComparer
                         value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
                         value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
                     }
-                    if (value1 == null && value2==null ) //
+                    if (value1 == null && value2==null )
                         if (fields.Count > 0)
                         {
                             value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
                             value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
                         }
-                    if (value1 != null || value2 !=null) //
+                    if (value1 != null || value2 !=null)
                     {
                         string temp = condition.ConditionParametr;
                         condition.ConditionParametr = temp.Substring(temp.IndexOf('.') + 1);
                         int result = Test2(value1, value2);
-                        if (condition_iterator + 1 == Conditions.Count && result == 0)
+                        if (_conditionIterator + 1 == Conditions.Count && result == 0)
                         {
                             return 0;
                         }
@@ -233,32 +226,109 @@ namespace UniversalComparer
                         value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(x);
                         value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(y);
                     }
-                    if(value1==null && value2 == null) //
+                    if(value1==null && value2 == null)
                         if (fields.Count > 0)
                         {
                             value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(x);
                             value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(y);
                         }
-                    if (value1 != null || value2 != null) //
+                    if (value1 != null || value2 != null)
                     {
                         int result = Test2(value1, value2);
-                        if (condition_iterator + 1 == Conditions.Count && result==0)
+                        if (_conditionIterator + 1 == Conditions.Count && result==0)
                         {
                             return 0;
                         }
                         if(result!=0) return result;
                     }                  
                 }
-                condition_iterator++;
+                _conditionIterator++;
             }
-
             return 0;
-            throw new Exception("Error");
         }
 
         public int Compare(object x, object y)
         {
-            return  Comparer.Default.Compare(x, y);
+            try
+            {
+                if (Comparer.Default.Compare(x, y) == 0)
+                {
+                    return 0;
+                }
+                int result;
+                if (_desc) result = Comparer.Default.Compare(x, y) * -1;
+                else result = Comparer.Default.Compare(x, y);
+                if (x is null || y is null)
+                {
+                    if (_nullValueIsSmallest) return result * -1;
+                    return result;
+                }
+                return result;
+            }
+            catch
+            {
+                // ignored
+            }
+
+            Type myType = x.GetType();
+            List<FieldInfo> fields = myType.GetFields().ToList();
+            List<PropertyInfo> props = myType.GetProperties().ToList();
+
+            foreach (var condition in Conditions)
+            {
+                _desc = condition.Desc;
+                object value1 = null, value2 = null;
+                if (condition.ConditionParametr.Contains('.'))
+                {
+                    if (props.Count > 0)
+                    {
+                        value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
+                        value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
+                    }
+                    if (value1 == null && value2 == null)
+                        if (fields.Count > 0)
+                        {
+                            value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
+                            value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
+                        }
+                    if (value1 != null || value2 != null)
+                    {
+                        string temp = condition.ConditionParametr;
+                        condition.ConditionParametr = temp.Substring(temp.IndexOf('.') + 1);
+                        int result = Compare(value1, value2);
+                        if (_conditionIterator + 1 == Conditions.Count && result == 0)
+                        {
+                            return 0;
+                        }
+                        if (result != 0) return result;
+                    }
+                }
+                else
+                {
+                    if (props.Count > 0)
+                    {
+                        value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(x);
+                        value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(y);
+                    }
+                    if (value1 == null && value2 == null)
+                        if (fields.Count > 0)
+                        {
+                            value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(x);
+                            value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(y);
+                        }
+                    if (value1 != null || value2 != null)
+                    {
+                        int result = Compare(value1, value2);
+                        if (_conditionIterator + 1 == Conditions.Count && result == 0)
+                        {
+                            return 0;
+                        }
+                        if (result != 0) return result;
+                    }
+                }
+                _conditionIterator++;
+            }
+            return 0;
         }
 
     }
