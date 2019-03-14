@@ -12,7 +12,7 @@ namespace UniversalComparer
     {
         private string SortString { get; set;}
 
-        private bool NullValueIsSmallest;
+        private bool _nullValueIsSmallest;
        // private Type Type { get; set; }
 
         public List<Condition> Conditions = new List<Condition>();
@@ -22,7 +22,7 @@ namespace UniversalComparer
         public UniversalComparer(string sortString, bool nullValueIsSmallest)
         {
             SortString = sortString;
-            NullValueIsSmallest = nullValueIsSmallest;
+            _nullValueIsSmallest = nullValueIsSmallest;
             ParseSortCondition();
         }
 
@@ -177,10 +177,15 @@ namespace UniversalComparer
                 }
                 else
                 {
-                    if(desc)
-                    return Comparer.Default.Compare(x, y)*-1;
-                    else
-                    return Comparer.Default.Compare(x, y);
+                    int result;
+                    if (desc) result = Comparer.Default.Compare(x, y) * -1;
+                    else result = Comparer.Default.Compare(x, y);
+                    if (x is null || y is null)
+                    {
+                        if (_nullValueIsSmallest) return result*-1;
+                        return  result;
+                    }
+                    return result;
                 }
             }
             catch
@@ -209,7 +214,7 @@ namespace UniversalComparer
                             value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
                             value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
                         }
-                    if (value1 != null) //
+                    if (value1 != null || value2 !=null) //
                     {
                         int result = Test2(value1, value2);
                         if (condition_iterator + 1 == Conditions.Count && result == 0)
@@ -232,7 +237,7 @@ namespace UniversalComparer
                             value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(x);
                             value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(y);
                         }
-                    if (value1 != null) //
+                    if (value1 != null || value2 != null) //
                     {
                         int result = Test2(value1, value2);
                         if (condition_iterator + 1 == Conditions.Count && result==0)

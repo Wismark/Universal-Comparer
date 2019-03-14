@@ -40,10 +40,10 @@ namespace UniversalComparer
             var person4 = new Person()
             {
                 Born = DateTime.MinValue,
-                Chief = person1,
+                Chief = null,
                 FirstName = "Hikel",
                 LastName = "Lobar",
-                number = 1
+                number = 100
             };
             people.AddRange(new Person[] { person1, person2, person3 });
 
@@ -53,7 +53,7 @@ namespace UniversalComparer
                 t5 = "FirstName, number";
 
             //ShowCollection(people);
-            var comparer = new UniversalComparer(t1, true);
+            var comparer = new UniversalComparer(t1, false);
             //people.Sort(0,3, comparer as IComparer<Person>);
             //ShowCollection(people);
 
