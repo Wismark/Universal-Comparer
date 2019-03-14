@@ -22,7 +22,7 @@ namespace UniversalComparer
             };
             var person2 = new Person()
             {
-                Born = DateTime.MinValue,
+                Born = DateTime.MaxValue,
                 Chief = person1,
                 FirstName = "Donald",
                 LastName = "Duck",
@@ -32,32 +32,34 @@ namespace UniversalComparer
             {
                 Born = DateTime.MinValue,
                 Chief = person1,
-                FirstName = "Mike",
+                FirstName = "Hikel",
                 LastName = "Lobar",
-                number = 213
+                number = 100
             };
 
             var person4 = new Person()
             {
                 Born = DateTime.MinValue,
                 Chief = person1,
-                FirstName = "Mike",
+                FirstName = "Hikel",
                 LastName = "Lobar",
-                number = 222
+                number = 1
             };
             people.AddRange(new Person[] { person1, person2, person3 });
 
-            string t1 = "LastName, FirstName, Born.Year desc", t2 = "FirstName desc, Born.Day, Chief.Born.Day desc",
-            t3 = "FirstName desc, Desc, Chief.Born.Day desc, descot desc", t4 = "LastName, FirstName, number"; //"FirstName desc, desc, Chief.Born.Day desc, descot desc";
-
+            string t1 = "Chief.Born.Day, FirstName, Born.Year desc, number",
+                t2 = "FirstName desc, Born.Day, Chief.Born.Day desc",
+                t4 = "LastName, FirstName, number", //"FirstName desc, desc, Chief.Born.Day desc, descot desc";
+                t5 = "FirstName, number";
 
             //ShowCollection(people);
-            var comparer = new UniversalComparer(t1);
+            var comparer = new UniversalComparer(t1, true);
             //people.Sort(0,3, comparer as IComparer<Person>);
             //ShowCollection(people);
 
             Console.WriteLine("--------");
-            Console.WriteLine(comparer.Test(person3, person4));
+            Console.WriteLine("result of compare:"+ comparer.Test2(person3, person4));
+          //  Console.WriteLine(comparer.Compare("Hikel", "Hikel"));
             Console.ReadLine();
         }
 
@@ -70,14 +72,5 @@ namespace UniversalComparer
                                  ,(person.Chief is null ? "" : "Chief:"+ person.Chief.FirstName + " " + person.Chief.LastName)));
             }
         }
-        public class Person
-        {
-            public Person Chief;
-            public String FirstName;
-            public String LastName;
-            public DateTime Born;
-            public int number;
-        }
-
     }
 }

@@ -11,13 +11,18 @@ namespace UniversalComparer
     class UniversalComparer : IComparer
     {
         private string SortString { get; set;}
+
+        private bool NullValueIsSmallest;
        // private Type Type { get; set; }
 
         public List<Condition> Conditions = new List<Condition>();
+        private int condition_iterator = 0;
+        private bool desc=true;
 
-        public UniversalComparer(string sortString)
+        public UniversalComparer(string sortString, bool nullValueIsSmallest)
         {
             SortString = sortString;
+            NullValueIsSmallest = nullValueIsSmallest;
             ParseSortCondition();
         }
 
@@ -41,24 +46,24 @@ namespace UniversalComparer
                     if (list[i + 1].Contains("desc") && (!list[i].Contains("desc") || list[i].Length>4))
                     {
                         tempCondition = new Condition();
-                        tempCondition.desc=true;
-                        tempCondition.conditionParametr = list[i];
+                        tempCondition.Desc=true;
+                        tempCondition.ConditionParametr = list[i];
                     }
                     else
                     {
                         if (list[i].Length!=4)
                         {
                             tempCondition = new Condition();
-                            tempCondition.desc = false;
-                            tempCondition.conditionParametr = list[i];
+                            tempCondition.Desc = false;
+                            tempCondition.ConditionParametr = list[i];
                         }
                         else
                         {
                             if (!list[i].Contains("desc"))
                             {
                                 tempCondition = new Condition();
-                                tempCondition.desc = false;
-                                tempCondition.conditionParametr = list[i];
+                                tempCondition.Desc = false;
+                                tempCondition.ConditionParametr = list[i];
                             }
                         }
                     }
@@ -70,8 +75,8 @@ namespace UniversalComparer
                         if (list[i + 1].Contains("desc"))
                         {
                             tempCondition = new Condition();
-                            tempCondition.desc = true;
-                            tempCondition.conditionParametr = list[i];
+                            tempCondition.Desc = true;
+                            tempCondition.ConditionParametr = list[i];
                         }
                     }
                     else
@@ -79,20 +84,23 @@ namespace UniversalComparer
                         if (!(list[i].Contains("desc") && list[i].Length==4))
                         {
                             tempCondition = new Condition();
-                            tempCondition.desc = false;
-                            tempCondition.conditionParametr = list[i];
+                            tempCondition.Desc = false;
+                            tempCondition.ConditionParametr = list[i];
                         }
                     }
                 }
 
                 if (list[i].Contains('.'))
                 {
-                   // var tempStr = list[i].Split('.');
-                    if (list[i + 1].Contains("desc"))
+                    if (!(i + 1 > list.Count - 1))
                     {
-                        tempCondition = new Condition();
-                        tempCondition.desc = true;
-                        tempCondition.conditionParametr = list[i]; //tempStr[0];
+                        // var tempStr = list[i].Split('.');
+                        if (list[i + 1].Contains("desc"))
+                        {
+                            tempCondition = new Condition();
+                            tempCondition.Desc = true;
+                            tempCondition.ConditionParametr = list[i]; //tempStr[0];
+                        }
                     }
                 };
                 if(tempCondition!=null) Conditions.Add(tempCondition);
@@ -100,7 +108,7 @@ namespace UniversalComparer
 
             foreach (var condition in Conditions)
             {
-                Console.WriteLine(condition.conditionParametr + " " + condition.desc);
+                Console.WriteLine(condition.ConditionParametr + " " + condition.Desc);
             }
 
         }
@@ -119,15 +127,15 @@ namespace UniversalComparer
             foreach (var condition in Conditions)
             {
                 object value1, value2;
-                if (condition.conditionParametr.Contains('.'))
+                if (condition.ConditionParametr.Contains('.'))
                 {
-                    value1 = props.SingleOrDefault(p => p.Name == condition.conditionParametr.Split('.')[0]).GetValue(x);
-                    value2 = props.SingleOrDefault(p => p.Name == condition.conditionParametr.Split('.')[0]).GetValue(y);
+                    value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0]).GetValue(x);
+                    value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0]).GetValue(y);
                 }
                 else
                 {
-                    value1 = props.SingleOrDefault(p => p.Name == condition.conditionParametr).GetValue(x);
-                    value2 = props.SingleOrDefault(p => p.Name == condition.conditionParametr).GetValue(y);
+                    value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr).GetValue(x);
+                    value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr).GetValue(y);
                 }
 
                 Console.WriteLine(value1.GetType().ToString() + "---" + value1==null ? "null" : value1);
@@ -135,7 +143,7 @@ namespace UniversalComparer
                 {
                     case "System.String": Console.WriteLine("s="+(string)value1); break;
                     case "System.Int32": Console.WriteLine("i=" + (int)value1);  break;
-                    default: Console.WriteLine("data="+((PropertyInfo)InnerValue(value1, condition.conditionParametr)).GetValue(value1)); break;
+                    default: Console.WriteLine("data="+((PropertyInfo)InnerValue(value1, condition.ConditionParametr)).GetValue(value1)); break;
                 }
             }
            
@@ -145,28 +153,104 @@ namespace UniversalComparer
         public object InnerValue(object obj, string str)
         {
             List<PropertyInfo> props = obj.GetType().GetProperties().ToList();
-            var value = props.SingleOrDefault(p => p.Name == str);
-            if (value != null) return value;
-            else
+            object value = props.SingleOrDefault(p => p.Name == str);
+            //if (value is null)
+            //{              
+            //    List<FieldInfo> fields = obj.GetType().GetFields().ToList();
+            //    value = fields.SingleOrDefault(p => p.Name == str.Split('.')[0]);
+            //    if (value != null) return InnerValue(obj, str.Substring(str.IndexOf('.') + 1));
+            //}
+            if (value != null)
+                return value;
+            var some = InnerValue(obj,
+                str.Substring(str.IndexOf('.') + 1));
+            return some;
+        }
+
+        public int Test2(object x, object y)
+        {
+            try
             {
-                var some = InnerValue(obj, str.Substring(str.IndexOf('.') + 1));
-                if (some != null) return some;
+                if (Comparer.Default.Compare(x, y) == 0)
+                {
+                    return 0;                   
+                }
+                else
+                {
+                    if(desc)
+                    return Comparer.Default.Compare(x, y)*-1;
+                    else
+                    return Comparer.Default.Compare(x, y);
+                }
             }
-            return null;
+            catch
+            {
+                // ignored
+            }
+
+            Type myType = x.GetType();
+            List<FieldInfo> fields = myType.GetFields().ToList();
+            List<PropertyInfo> props = myType.GetProperties().ToList();
+            
+            foreach (var condition in Conditions)
+            {
+                desc = condition.Desc;
+                object value1 = null, value2 = null;
+                if (condition.ConditionParametr.Contains('.'))
+                {
+                    if (props.Count > 0)
+                    {
+                        value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
+                        value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
+                    }
+                    if (value1 == null) //
+                        if (fields.Count > 0)
+                        {
+                            value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(x);
+                            value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr.Split('.')[0])?.GetValue(y);
+                        }
+                    if (value1 != null) //
+                    {
+                        int result = Test2(value1, value2);
+                        if (condition_iterator + 1 == Conditions.Count && result == 0)
+                        {
+                            return 0;
+                        }
+                        if (result != 0) return result;
+                    }
+                }
+                else
+                {
+                    if (props.Count > 0)
+                    {
+                        value1 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(x);
+                        value2 = props.SingleOrDefault(p => p.Name == condition.ConditionParametr)?.GetValue(y);
+                    }
+                    if(value1==null) //
+                        if (fields.Count > 0)
+                        {
+                            value1 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(x);
+                            value2 = fields.SingleOrDefault(f => f.Name == condition.ConditionParametr)?.GetValue(y);
+                        }
+                    if (value1 != null) //
+                    {
+                        int result = Test2(value1, value2);
+                        if (condition_iterator + 1 == Conditions.Count && result==0)
+                        {
+                            return 0;
+                        }
+                        if(result!=0) return result;
+                    }                  
+                }
+                condition_iterator++;
+            }
+            throw new Exception("Error");
         }
 
         public int Compare(object x, object y)
         {
-            x.GetType().GetProperty("FirstName").GetValue(x);
-            throw new NotImplementedException();
+            return  Comparer.Default.Compare(x, y);
         }
 
-   
-    }
-
-    class Condition
-    {
-        public string conditionParametr;
-        public bool desc;
     }
 }
