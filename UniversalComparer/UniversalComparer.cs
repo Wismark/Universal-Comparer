@@ -93,6 +93,61 @@ namespace UniversalComparer
             }
         }
 
+        public void ParseSortConditionReborn()
+        {
+            var list = SortString.Split(' ').ToList();
+
+            for (int j = 0; j < list.Count; j++)
+            {
+                if (list[j].Contains(',')) list[j]=list[j].Remove(list[j].Length-1);
+                Console.WriteLine(list[j]);
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Condition tempCondition = null;
+
+                if (!(i + 1 > list.Count - 1))
+                {
+                    if (list[i + 1].Contains("desc"))
+                    {
+                        tempCondition = new Condition();
+                        tempCondition.Desc = true;
+                        tempCondition.ConditionParametr = list[i];
+                    }
+                }
+                else
+                {
+                    if (!(list[i].Contains("desc") && list[i].Length == 4))
+                    {
+                        tempCondition = new Condition();
+                        tempCondition.Desc = false;
+                        tempCondition.ConditionParametr = list[i];
+                    }
+                }
+
+                if (list[i].Contains('.'))
+                {
+                    if (!(i + 1 > list.Count - 1))
+                    {
+                        if (list[i + 1].Contains("desc"))
+                        {
+                            tempCondition = new Condition();
+                            tempCondition.Desc = true;
+                            tempCondition.ConditionParametr = list[i];
+                        }
+                    }
+                }
+
+                if (tempCondition != null) Conditions.Add(tempCondition);
+            }
+
+            Console.WriteLine("------");
+            foreach (var condition in Conditions)
+            {
+                Console.WriteLine(condition.ConditionParametr + " " + condition.Desc);
+            }
+        }
 
         public int Compare(object x, object y)
         {

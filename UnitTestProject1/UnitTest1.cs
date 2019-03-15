@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UniversalComparer;
 
@@ -303,13 +302,9 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void ada()
+        public void DayMonthSort()
         {
             //Organization
-            var chief1 = new Person()
-            {
-                Born = DateTime.MaxValue,
-            };
 
             var test = new List<Person>();
             test.AddRange(new[]
