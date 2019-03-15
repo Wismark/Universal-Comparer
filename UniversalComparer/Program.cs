@@ -10,29 +10,6 @@ namespace UniversalComparer
         private static void Main(string[] args)
         {
             var people = new List<Person>();
-            //var person1 = new Person()
-            //{
-            //    Born = DateTime.MinValue,
-            //    Chief = null,
-            //    FirstName = "John",
-            //    LastName = "Aoren",
-            //    number = 223
-            //};
-
-            //var person2 = new Person()
-            //{
-            //    Born = DateTime.MinValue,
-            //    Chief = null,
-            //    FirstName = "Hikel",
-            //    LastName = "Lobar",
-            //    number = 100
-            //};
-
-            //string str = "LastName, FirstName, Born.Year desc";
-            //var comparer = new UniversalComparer(str, false);
-
-            ////Action
-            //int result = comparer.Compare(person1, person2);
 
             var person1 = new Person
             {
@@ -50,23 +27,6 @@ namespace UniversalComparer
                 LastName = "Duck",
                 number = 223
             };
-            //var person1 = new Person()
-            //{
-            //    Born = DateTime.MinValue,
-            //    Chief = null,
-            //    FirstName = "John",
-            //    LastName = "Aoren",
-            //    number = 223
-            //};
-
-            //var person2 = new Person()
-            //{
-            //    Born = DateTime.MinValue,
-            //    Chief = null,
-            //    FirstName = "Hikel",
-            //    LastName = "Lobar",
-            //    number = 100
-            //};
             var person3 = new Person
             {
                 Born = DateTime.ParseExact("02-08-1992", "dd-MM-yyyy", CultureInfo.InvariantCulture),
@@ -110,7 +70,6 @@ namespace UniversalComparer
                 Owner = person1
             };
 
-
             Person[] people2 = 
             {
                 new Person() {FirstName = "Ketty", Born=DateTime.ParseExact(  "2009-05-08", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
@@ -124,32 +83,23 @@ namespace UniversalComparer
             };
 
             string test1 = "Born.Day desc, Born.Month desc";
-
             var comparerTest = new UniversalComparer(test1, true);
-
-           // people.AddRange(new[] { person1, person2, person3, person4, person5 });
+            people.AddRange(new[] { person1, person2, person3, person4, person5 });
             people.AddRange(people2);
-
             string t1 = "Chief.Born.Day, FirstName, Born.Year desc, number",
                 t2 = "FirstName desc, Born.Day, Chief.Born.Day desc",
-                t4 = "LastName, FirstName, number", //"FirstName desc, desc, Chief.Born.Day desc, descot desc";
+                t4 = "LastName, FirstName, number", 
                 t5 = "FirstName, number";
 
             var str = "HasEngine, maxSpeed desc, Owner.Chief.Born.Day";
             var str2 = "Owner.Chief.Born.Day, maxSpeed, Owner.Born.Day";
             ShowCollection(people);
-            //Console.ReadKey();
-            //      var comparer = new UniversalComparer("LastName, FirstName, Born.Year desc", false);
-            //     var comparer2 = new UniversalComparer(str2, false);
             Console.WriteLine("--------");
             people.Sort(comparerTest);
-            //     people.Sort((x, y) => comparerTest.Compare(x.Born.Year,y.Born.Year));
             ShowCollection(people);
-            //Console.WriteLine(comparer.Compare(null, null));
             //Console.WriteLine("--------");
             //Console.WriteLine("result of car compare:" + comparer2.Test2(car1, car2));
             //Console.WriteLine("result of compare:" + comparerTest.Compare(person5, person4));
-            //Console.WriteLine(Comparer.Default.Compare("Aoren", "Lobar"));
             Console.ReadLine();
         }
 
