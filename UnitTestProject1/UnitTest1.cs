@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UniversalComparer;
 
@@ -179,6 +182,7 @@ namespace UnitTestProject1
             //Action
             int result = comparer.Compare(person1, person2);
 
+            //Assert
             Assert.AreEqual(result, -1);
         }
 
@@ -220,6 +224,7 @@ namespace UnitTestProject1
             //Action
             int result = comparer.Compare(person1, person2);
 
+            //Assert
             Assert.AreEqual(result, -1);
         }
 
@@ -257,6 +262,7 @@ namespace UnitTestProject1
             //Action
             int result = comparer.Compare(person1, person2);
 
+            //Assert
             Assert.AreEqual(result, 1);
         }
 
@@ -292,7 +298,43 @@ namespace UnitTestProject1
             //Action
             int result = comparer.Compare(person1, person2);
 
+            //Assert
             Assert.AreEqual(result, 1);
+        }
+
+        [TestMethod]
+        public void ada()
+        {
+            //Organization
+            var chief1 = new Person()
+            {
+                Born = DateTime.MaxValue,
+            };
+
+            var test = new List<Person>();
+            test.AddRange(new[]
+            {
+                new Person() {FirstName = "Ketty", Born=DateTime.ParseExact(  "2009-05-08", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Mikel", Born=DateTime.ParseExact(  "2009-05-07", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Nicole", Born=DateTime.ParseExact( "2009-09-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Ben", Born=DateTime.ParseExact(    "2009-05-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Anton", Born=DateTime.ParseExact(  "2009-02-01", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Michiel", Born=DateTime.ParseExact("2009-02-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Lovar", Born=DateTime.ParseExact(  "2009-05-03", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Lariot", Born=DateTime.ParseExact( "2009-05-12", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+            });
+
+            string str = "Born.Day desc, Born.Month desc"; //Born.Day desc, Born.Month desc
+
+            var comparer = new UniversalComparer.UniversalComparer(str, true);           
+            
+            //Action
+            test.Sort(comparer);
+
+            //Assert
+            Assert.AreEqual(test[0].FirstName, "Lariot");
+            Assert.AreEqual(test[test.Count-1].FirstName, "Anton");
+
         }
     }
 }
