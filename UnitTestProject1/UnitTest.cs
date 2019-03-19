@@ -48,7 +48,7 @@ namespace UnitTestProject1
             };
 
             string str = "HasEngine, MaxSpeed desc, Owner.Chief.Born.Day";
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, false);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, false);
             
             //Action
             int result = comparer.Compare(car1, car2);
@@ -95,7 +95,7 @@ namespace UnitTestProject1
             };
 
             string str = "HasEngine, MaxSpeed desc, Owner.Chief.Born.Day";
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, true);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, true);
 
             //Action
             int result = comparer.Compare(car1, car2);
@@ -143,7 +143,7 @@ namespace UnitTestProject1
             };
 
             string str = "HasEngine, MaxSpeed desc, Owner.Chief.Born.Day";
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, false);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, false);
 
             //Action
             int result = comparer.Compare(car1, car2);
@@ -176,7 +176,7 @@ namespace UnitTestProject1
             };
 
             string str = "LastName, FirstName, Born.Year desc";
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, false);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, false);
 
             //Action
             int result = comparer.Compare(person1, person2);
@@ -218,7 +218,7 @@ namespace UnitTestProject1
             };
 
             string str = "FirstName desc, Born.Day, Chief.Born.Day desc";
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, false);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, false);
 
             //Action
             int result = comparer.Compare(person1, person2);
@@ -256,7 +256,7 @@ namespace UnitTestProject1
             };
 
             string str = "FirstName desc, Born.Day, Chief.Born.Day";
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, false);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, false);
 
             //Action
             int result = comparer.Compare(person1, person2);
@@ -292,7 +292,7 @@ namespace UnitTestProject1
             };
 
             string str = "FirstName desc, Born.Day, Chief.Born.Day desc";
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, true);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, true);
 
             //Action
             int result = comparer.Compare(person1, person2);
@@ -321,7 +321,7 @@ namespace UnitTestProject1
 
             string str = "Born.Day desc, Born.Month desc"; //Born.Day desc, Born.Month desc
 
-            var comparer = new UniversalComparer.UniversalComparer.UniversalComparer(str, true);           
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, true);           
             
             //Action
             test.Sort(comparer);

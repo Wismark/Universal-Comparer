@@ -60,6 +60,10 @@
       <Project>{1a78555a-302a-43f8-b70a-b5d0921770b5}</Project>
       <Name>Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UniversalComparerLibrary\UniversalComparerLibrary.csproj">
+      <Project>{8D8E7290-7110-4169-A564-81B2CEAF499D}</Project>
+      <Name>UniversalComparerLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UniversalComparer\TestConsoleApp.csproj">
       <Project>{d4dff8f8-7b3b-44a9-908a-cac27ecdb9d1}</Project>
       <Name>TestConsoleApp</Name>

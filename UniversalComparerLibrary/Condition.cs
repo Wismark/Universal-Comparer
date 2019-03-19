@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UniversalComparer.UniversalComparer
+namespace UniversalComparerLibrary
 {
     public class Condition
     {

@@ -95,7 +95,7 @@ namespace UniversalComparer
             };
 
             string str = "FirstName desc, Born.Day, Chief.Born.Day desc";
-            var comparer = new UniversalComparer.UniversalComparer(str, true);
+            var comparer = new UniversalComparerLibrary.UniversalComparer(str, true);
 
             //Action
             Console.WriteLine(comparer.Compare(person1, person2));
