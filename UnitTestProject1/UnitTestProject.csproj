@@ -49,16 +49,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="UnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UniversalComparer\UniversalComparer.csproj">
+    <ProjectReference Include="..\ClassLibrary\Entities.csproj">
+      <Project>{1a78555a-302a-43f8-b70a-b5d0921770b5}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UniversalComparer\TestConsoleApp.csproj">
       <Project>{d4dff8f8-7b3b-44a9-908a-cac27ecdb9d1}</Project>
-      <Name>UniversalComparer</Name>
+      <Name>TestConsoleApp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace UniversalComparer
+namespace ClassLibrary
 {
     public class Person
     { 
@@ -12,6 +8,6 @@ namespace UniversalComparer
         public String FirstName;
         public String LastName;
         public DateTime Born;
-        public int number;
+        public int Number;
     }
 }
