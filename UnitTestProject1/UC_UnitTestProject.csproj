@@ -56,17 +56,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary\Entities.csproj">
+    <ProjectReference Include="..\ClassLibrary\UC_Entities.csproj">
       <Project>{1a78555a-302a-43f8-b70a-b5d0921770b5}</Project>
-      <Name>Entities</Name>
+      <Name>UC_Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UniversalComparerLibrary\UniversalComparerLibrary.csproj">
+    <ProjectReference Include="..\UniversalComparerLibrary\UC_UniversalComparerLibrary.csproj">
       <Project>{8D8E7290-7110-4169-A564-81B2CEAF499D}</Project>
-      <Name>UniversalComparerLibrary</Name>
+      <Name>UC_UniversalComparerLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UniversalComparer\TestConsoleApp.csproj">
+    <ProjectReference Include="..\UniversalComparer\UC_TestConsoleApp.csproj">
       <Project>{d4dff8f8-7b3b-44a9-908a-cac27ecdb9d1}</Project>
-      <Name>TestConsoleApp</Name>
+      <Name>UC_TestConsoleApp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

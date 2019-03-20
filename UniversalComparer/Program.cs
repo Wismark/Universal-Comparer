@@ -94,7 +94,7 @@ namespace UniversalComparer
                 Number = 100
             };
 
-            string str = "FirstName desc, Born.Day, Chief.Born.Day desc";
+            string str = "FirstName desc, Born.Day, Chief.Born.Day desc, description desc, desc.desc.desc ";
             var comparer = new UniversalComparerLibrary.UniversalComparer(str, true);
 
             //Action

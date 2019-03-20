@@ -99,10 +99,17 @@ namespace UniversalComparerLibrary
 
             for (int j = 0; j < list.Count; j++)
             {
-                if (list[j][0] == ' ') list[j] = list[j].Remove(0, 1);
+                list[j] = list[j].Trim(); 
 
-                var condition = new Condition();                
-                if (list[j].Contains("desc")) {list[j] = list[j].Split(' ')[0]; condition.Desc = true; } 
+                var condition = new Condition();
+                if (list[j].Split(' ').Length>1)
+                {
+                    if (list[j].Split(' ')[1] == "desc")
+                    {
+                        list[j] = list[j].Split(' ')[0];
+                        condition.Desc = true;
+                    }
+                } 
                 foreach (var param in list[j].Split('.').ToList())
                 {
                     condition.Parameters.Enqueue(param);
@@ -112,11 +119,11 @@ namespace UniversalComparerLibrary
 
             //foreach (var condition in Conditions)
             //{
-            //    foreach (var parametr in condition.Parametrs)
+            //    foreach (var parametr in condition.Parameters)
             //    {
             //        Console.WriteLine(parametr);
             //    }
-            //    Console.WriteLine("Desc:" + condition.Desc);
+            //    Console.WriteLine("Desc:" + condition.Desc + "\n ---");
             //}
         }
 
@@ -203,8 +210,15 @@ namespace UniversalComparerLibrary
             var fields = obj.GetType().GetFields().ToList();
             var props = obj.GetType().GetProperties().ToList();
 
-            if (props.Count > 0) result = props.SingleOrDefault(p => p.Name == pQue.Peek())?.GetValue(obj);
-            if (fields.Count > 0 && result is null) result = fields.SingleOrDefault(p => p.Name == pQue.Peek())?.GetValue(obj);
+            if (props.Count > 0)
+            {
+                result = props.SingleOrDefault(p => p.Name == pQue.Peek())?.GetValue(obj);
+            }
+            if (fields.Count > 0 && result is null)
+            {
+                result = fields.SingleOrDefault(p => p.Name == pQue.Peek())?.GetValue(obj);
+            }
+
             pQue.Dequeue();
             result = GetObjectInnerValue(result, pQue);
 

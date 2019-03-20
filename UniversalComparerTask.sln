@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp", "UniversalComparer\TestConsoleApp.csproj", "{D4DFF8F8-7B3B-44A9-908A-CAC27ECDB9D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UC_TestConsoleApp", "UniversalComparer\UC_TestConsoleApp.csproj", "{D4DFF8F8-7B3B-44A9-908A-CAC27ECDB9D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject1\UnitTestProject.csproj", "{DE713B42-7014-4896-9AB2-60C226880620}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UC_UnitTestProject", "UnitTestProject1\UC_UnitTestProject.csproj", "{DE713B42-7014-4896-9AB2-60C226880620}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "ClassLibrary\Entities.csproj", "{1A78555A-302A-43F8-B70A-B5D0921770B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UC_Entities", "ClassLibrary\UC_Entities.csproj", "{1A78555A-302A-43F8-B70A-B5D0921770B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalComparerLibrary", "UniversalComparerLibrary\UniversalComparerLibrary.csproj", "{8D8E7290-7110-4169-A564-81B2CEAF499D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UC_UniversalComparerLibrary", "UniversalComparerLibrary\UC_UniversalComparerLibrary.csproj", "{8D8E7290-7110-4169-A564-81B2CEAF499D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

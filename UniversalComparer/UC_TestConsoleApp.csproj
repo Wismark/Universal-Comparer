@@ -50,13 +50,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary\Entities.csproj">
+    <ProjectReference Include="..\ClassLibrary\UC_Entities.csproj">
       <Project>{1a78555a-302a-43f8-b70a-b5d0921770b5}</Project>
-      <Name>Entities</Name>
+      <Name>UC_Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UniversalComparerLibrary\UniversalComparerLibrary.csproj">
+    <ProjectReference Include="..\UniversalComparerLibrary\UC_UniversalComparerLibrary.csproj">
       <Project>{8d8e7290-7110-4169-a564-81b2ceaf499d}</Project>
-      <Name>UniversalComparerLibrary</Name>
+      <Name>UC_UniversalComparerLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
