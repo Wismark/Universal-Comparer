@@ -188,6 +188,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void CompareChiefBirthdaysByDesc()
         {
+            //Organization
             var chief1 = new Person()
             {
                 Born = DateTime.MaxValue,
@@ -197,8 +198,7 @@ namespace UnitTestProject1
             {
                 Born = DateTime.MinValue,
             };
-
-            //Organization
+           
             var person1 = new Person()
             {
                 Born = DateTime.MinValue,
@@ -230,13 +230,12 @@ namespace UnitTestProject1
         [TestMethod]
         public void CompareChiefBirthdaysWithNullChief()
         {
+            //Organization
             var chief1 = new Person()
             {
                 Born = DateTime.MaxValue,
-            };
-
-
-            //Organization
+            };   
+            
             var person1 = new Person()
             {
                 Born = DateTime.MinValue,
@@ -268,11 +267,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void CompareChiefBirthdaysWithNullChiefWithNullParamTrue()
         {
+            //Organization
             var chief1 = new Person()
             {
                 Born = DateTime.MaxValue,
             };
-            //Organization
             var person1 = new Person()
             {
                 Born = DateTime.MinValue,

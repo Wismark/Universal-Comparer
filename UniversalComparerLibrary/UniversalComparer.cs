@@ -6,96 +6,18 @@ namespace UniversalComparerLibrary
 {
     public class UniversalComparer : IComparer<object>
     {
-        private string SortString { get; }
-
         private readonly bool _nullValueIsSmallest;
         public List<Condition> Conditions = new List<Condition>();
 
         public UniversalComparer(string sortString, bool nullValueIsSmallest)
         {
-            SortString = sortString;
             _nullValueIsSmallest = nullValueIsSmallest;
-            ParseSortCondition();
+            ParseSortCondition(sortString);
         }
 
-        //private void ParseSortConditionOld()
-        //{
-        //    List<string> list = SortString.Split(' ').ToList();
-
-        //    for (int i = 0; i < list.Count; i++)
-        //    {
-        //        Condition tempCondition = null;
-        //        if (list[i].Contains(','))
-        //        {
-        //            list[i] = list[i].Remove(list[i].Length - 1);
-        //            if (list[i + 1].Contains("desc") && (!list[i].Contains("desc") || list[i].Length > 4))
-        //            {
-        //                tempCondition = new Condition();
-        //                tempCondition.Desc = true;
-        //                tempCondition.ConditionParametr = list[i];
-        //            }
-        //            else
-        //            {
-        //                if (list[i].Length != 4)
-        //                {
-        //                    tempCondition = new Condition();
-        //                    tempCondition.Desc = false;
-        //                    tempCondition.ConditionParametr = list[i];
-        //                }
-        //                else
-        //                {
-        //                    if (!list[i].Contains("desc"))
-        //                    {
-        //                        tempCondition = new Condition();
-        //                        tempCondition.Desc = false;
-        //                        tempCondition.ConditionParametr = list[i];
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (!(i + 1 > list.Count - 1))
-        //            {
-        //                if (list[i + 1].Contains("desc"))
-        //                {
-        //                    tempCondition = new Condition();
-        //                    tempCondition.Desc = true;
-        //                    tempCondition.ConditionParametr = list[i];
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (!(list[i].Contains("desc") && list[i].Length == 4))
-        //                {
-        //                    tempCondition = new Condition();
-        //                    tempCondition.Desc = false;
-        //                    tempCondition.ConditionParametr = list[i];
-        //                }
-        //            }
-        //        }
-
-        //        if (list[i].Contains('.'))
-        //        {
-        //            if (!(i + 1 > list.Count - 1))
-        //            {
-        //                if (list[i + 1].Contains("desc"))
-        //                {
-        //                    tempCondition = new Condition();
-        //                    tempCondition.Desc = true;
-        //                    tempCondition.ConditionParametr = list[i];
-        //                }
-        //            }
-        //        }
-
-        //        if (tempCondition != null) Conditions.Add(tempCondition);
-        //    }
-        //}
-
-
-        private void ParseSortCondition()
+        private void ParseSortCondition(string sortString)
         {
-            var list = SortString.Split(',').ToList();
+            var list = sortString.Split(',').ToList();
 
             for (int j = 0; j < list.Count; j++)
             {
@@ -117,71 +39,8 @@ namespace UniversalComparerLibrary
                 Conditions.Add(condition);
             }
 
-            //foreach (var condition in Conditions)
-            //{
-            //    foreach (var parametr in condition.Parameters)
-            //    {
-            //        Console.WriteLine(parametr);
-            //    }
-            //    Console.WriteLine("Desc:" + condition.Desc + "\n ---");
-            //}
         }
 
-        //public void ParseSort2()
-        //{
-        //    var list = SortString.Split(' ').ToList();
-
-        //    for (int j = 0; j < list.Count; j++)
-        //    {
-        //        if (list[j].Contains(',')) list[j]=list[j].Remove(list[j].Length-1);
-        //        Console.WriteLine(list[j]);
-        //    }
-
-        //    for (int i = 0; i < list.Count; i++)
-        //    {
-        //        Condition tempCondition = null;
-
-        //        if (!(i + 1 > list.Count - 1))
-        //        {
-        //            if (list[i + 1].Contains("desc"))
-        //            {
-        //                tempCondition = new Condition();
-        //                tempCondition.Desc = true;
-        //                tempCondition.ConditionParametr = list[i];
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (!(list[i].Contains("desc") && list[i].Length == 4))
-        //            {
-        //                tempCondition = new Condition();
-        //                tempCondition.Desc = false;
-        //                tempCondition.ConditionParametr = list[i];
-        //            }
-        //        }
-
-        //        if (list[i].Contains('.'))
-        //        {
-        //            if (!(i + 1 > list.Count - 1))
-        //            {
-        //                if (list[i + 1].Contains("desc"))
-        //                {
-        //                    tempCondition = new Condition();
-        //                    tempCondition.Desc = true;
-        //                    tempCondition.ConditionParametr = list[i];
-        //                }
-        //            }
-        //        }
-
-        //        if (tempCondition != null) Conditions.Add(tempCondition);
-        //    }
-
-        //    Console.WriteLine("------");
-        //    foreach (var condition in Conditions)
-        //    {
-        //        Console.WriteLine(condition.ConditionParametr + " " + condition.Desc);
-        //    }
-        //}
 
         public int Compare(object x, object y)
         {

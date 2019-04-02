@@ -9,8 +9,8 @@ namespace UniversalComparer
     {
         private static void Main()
         {
-           // UniversalComparer a =new UniversalComparer("Chief.Born.Day, FirstName, Born.Year desc, number", false); //a.ParseSortConditionReborn();
-           // var people = new List<Person>();
+           // UniversalComparerLibrary.UniversalComparer a = new UniversalComparerLibrary.UniversalComparer("Chief.Born.Day, FirstName, Born.Year desc, number", false); //a.ParseSortConditionReborn();
+            var people = new List<Person>();
 
             //var person1 = new Person
             //{
@@ -18,7 +18,7 @@ namespace UniversalComparer
             //    Chief = null,
             //    FirstName = "John",
             //    LastName = "Doe",
-            //    number = 223
+            //    Number = 223
             //};
             //var person2 = new Person
             //{
@@ -26,7 +26,7 @@ namespace UniversalComparer
             //    Chief = person1,
             //    FirstName = "Donald",
             //    LastName = "Duck",
-            //    number = 223
+            //    Number = 223
             //};
             //var person3 = new Person
             //{
@@ -34,7 +34,7 @@ namespace UniversalComparer
             //    Chief = null,
             //    FirstName = "Hikel",
             //    LastName = "Lobar",
-            //    number = 100
+            //    Number = 100
             //};
 
             //var person4 = new Person
@@ -43,7 +43,7 @@ namespace UniversalComparer
             //    Chief = person3,
             //    FirstName = "Aikel",
             //    LastName = "Lobar",
-            //    number = 101
+            //    Number = 101
             //};
 
             //var person5 = new Person
@@ -52,7 +52,7 @@ namespace UniversalComparer
             //    Chief = person3,
             //    FirstName = "Aikel",
             //    LastName = "Lobar",
-            //    number = 101
+            //    Number = 101
             //};
 
             //var car1 = new Car
@@ -71,64 +71,65 @@ namespace UniversalComparer
             //    Owner = person1
             //};
 
-            var chief1 = new Person()
-            {
-                Born = DateTime.MaxValue,
-            };
-            //Organization
-            var person1 = new Person()
-            {
-                Born = DateTime.MinValue,
-                Chief = chief1,
-                FirstName = "Hikel",
-                LastName = "Lobar",
-                Number = 223
-            };
-
-            var person2 = new Person()
-            {
-                Born = DateTime.MinValue,
-                Chief = null,
-                FirstName = "Hikel",
-                LastName = "Lobar",
-                Number = 100
-            };
-
-            string str = "FirstName desc, Born.Day, Chief.Born.Day desc, description desc, desc.desc.desc ";
-            var comparer = new UniversalComparerLibrary.UniversalComparer(str, true);
-
-            //Action
-            Console.WriteLine(comparer.Compare(person1, person2));
-
-            //Person[] people2 =
+            //var chief1 = new Person()
             //{
-            //    new Person() {FirstName = "Ketty", Born=DateTime.ParseExact(  "2009-05-08", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
-            //    new Person() {FirstName = "Mikel", Born=DateTime.ParseExact(  "2009-05-07", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
-            //    new Person() {FirstName = "Nicole", Born=DateTime.ParseExact( "2009-09-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
-            //    new Person() {FirstName = "Ben", Born=DateTime.ParseExact(    "2009-05-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
-            //    new Person() {FirstName = "Anton", Born=DateTime.ParseExact(  "2009-02-01", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
-            //    new Person() {FirstName = "Michiel", Born=DateTime.ParseExact("2009-02-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
-            //    new Person() {FirstName = "Lovar", Born=DateTime.ParseExact(  "2009-05-03", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
-            //    new Person() {FirstName = "Lariot", Born=DateTime.ParseExact( "2009-05-12", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+            //    Born = DateTime.MaxValue,
+            //};
+            ////Organization
+            //var person1 = new Person()
+            //{
+            //    Born = DateTime.MinValue,
+            //    Chief = chief1,
+            //    FirstName = "Hikel",
+            //    LastName = "Lobar",
+            //    Number = 223
             //};
 
-            //string test1 = "Born.Day desc,Born.Month desc";
-            //var comparerTest = new UniversalComparer(test1, true);
-            //people.AddRange(new[] { person1, person2, person3, person4, person5 });
-            //people.AddRange(people2);
-            //string t1 = "Chief.Born.Day, FirstName, Born.Year desc, number",
+            //var person2 = new Person()
+            //{
+            //    Born = DateTime.MinValue,
+            //    Chief = null,
+            //    FirstName = "Hikel",
+            //    LastName = "Lobar",
+            //    Number = 100
+            //};
+
+            //string str = "FirstName desc, Born.Day, Chief.Born.Day desc, description desc, desc.desc.desc ";
+            //var comparer = new UniversalComparerLibrary.UniversalComparer(str, true);
+
+            ////Action
+            //Console.WriteLine(comparer.Compare(person1, person2));
+            ////string t1 = "Chief.Born.Day, FirstName, Born.Year desc, number",
             //    t2 = "FirstName desc, Born.Day, Chief.Born.Day desc",
             //    t4 = "LastName, FirstName, number", 
             //    t5 = "FirstName, number"
             //var str = "HasEngine, maxSpeed desc, Owner.Chief.Born.Day";
             //var str2 = "Owner.Chief.Born.Day, maxSpeed, Owner.Born.Day";
-            //ShowCollection(people);
-            //Console.WriteLine("--------");
-            //people.Sort(comparerTest);
-            //ShowCollection(people);
-            //Console.WriteLine("--------");
-            //Console.WriteLine("result of car compare:" + comparer2.Test2(car1, car2));
+            ////Console.WriteLine("result of car compare:" + comparer2.Test2(car1, car2));
             //Console.WriteLine("result of compare:" + comparerTest.Compare(person5, person4));
+
+            Person[] people2 =
+            {
+                new Person() {FirstName = "Ketty", Born=DateTime.ParseExact(  "2009-05-08", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Mikel", Born=DateTime.ParseExact(  "2009-05-07", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Nicole", Born=DateTime.ParseExact( "2009-09-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Ben", Born=DateTime.ParseExact(    "2009-05-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Anton", Born=DateTime.ParseExact(  "2009-02-01", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Michiel", Born=DateTime.ParseExact("2009-02-06", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Lovar", Born=DateTime.ParseExact(  "2009-05-03", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+                new Person() {FirstName = "Lariot", Born=DateTime.ParseExact( "2009-05-12", "yyyy-MM-dd", CultureInfo.InvariantCulture)},
+            };
+
+            string test1 = "Born.Day desc, Born.Month desc";
+            var comparerTest = new UniversalComparerLibrary.UniversalComparer(test1, true);
+            people.AddRange(people2);
+    
+            ShowCollection(people);
+            Console.WriteLine("--------");
+            people.Sort(comparerTest);
+            ShowCollection(people);
+            Console.WriteLine("--------");
+
             Console.ReadLine();
         }
 
@@ -137,8 +138,8 @@ namespace UniversalComparer
             Console.WriteLine("People:");
             foreach (var person in peopleList)
                 Console.WriteLine(string.Concat(
-                    $"Name:{person.FirstName} {person.LastName}  Born:{person.Born.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)} "
-                    , (person.Chief is null ? "" : "Chief:" + person.Chief.FirstName + " " + person.Chief.LastName) + " " + person.Number));
+                    $"Name:{person.FirstName} {person.LastName} \t  Born:{person.Born.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)} "
+                    , (person.Chief is null ? "" : "Chief:" + person.Chief.FirstName + " " + person.Chief.LastName)));
         }
     }
 }
